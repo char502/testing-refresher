@@ -5,8 +5,6 @@ describe('group', () => {
   it('should render Hello with the name when name is provided', () => {
     render(<Greet name="Bob" />);
 
-    // screen.debug()
-
     const heading = screen.getByRole('heading');
     expect(heading).toBeInTheDocument();
     expect(heading).toHaveTextContent(/Hello Bob/i);

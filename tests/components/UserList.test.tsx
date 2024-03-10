@@ -7,8 +7,6 @@ describe('UserList', () => {
     render(<UserList users={[]} />);
 
     expect(screen.getByText(/no users/i)).toBeInTheDocument();
-
-    // screen.debug();
   });
   it('should render a list of users', () => {
     const users: User[] = [
