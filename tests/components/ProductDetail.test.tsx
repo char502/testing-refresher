@@ -1,18 +1,48 @@
 import { render, screen } from '@testing-library/react';
 import ProductDetail from '../../src/components/ProductDetail';
-import { products } from '../mocks/data';
+// import { products } from '../mocks/data';
 import { server } from '../mocks/server';
 import { http, HttpResponse } from 'msw';
+import { db } from '../mocks/db';
 
 describe('ProductDetail', () => {
-  it('should render a product from a list', async () => {
-    render(<ProductDetail productId={1} />);
+  let productId: number;
 
+  beforeAll(() => {
+    const product = db.product.create();
+    productId = product.id;
+  });
+
+  afterAll(() => {
+    // only want to delete the products we have created for this test
+    // not all the products in the db
+    // Here only want to delete the products who's id's are in this array
+    db.product.delete({ where: { id: { equals: productId } } });
+  });
+
+  it('should render product details', async () => {
+    // getting the product from the database
+    // using findFirst() can apply a filter to the items in the db
+    const product = db.product.findFirst({
+      where: { id: { equals: productId } },
+    });
+
+    // console.log(productId);
+    // console.log(product);
+
+    render(<ProductDetail productId={productId} />);
+
+    // Use regular expression rather than exact string because
+    // findByText will look for (name: 'Licensed Cotton Car')
+    // not just 'Licensed Cotton Car'
+    // so using new RegExp will prevent the error as it will only find the bit of the string you want
     expect(
-      await screen.findByText(new RegExp(products[0].name))
+      await screen.findByText(new RegExp(product!.name))
     ).toBeInTheDocument();
+    // price is a number so cannot pass it as an argument to regex
+    // so here have to use toString() on the price to convert it to a string
     expect(
-      await screen.findByText(new RegExp(products[0].price.toString()))
+      await screen.findByText(new RegExp(product!.price.toString()))
     ).toBeInTheDocument();
   });
 
