@@ -90,7 +90,7 @@ describe('ProductDetail', () => {
     expect(await screen.findByText(/error/i)).toBeInTheDocument();
   });
 
-  it('should render a loading indicator when fetching data', async () => {
+  it('should render a loading indicator when fetching data', () => {
     server.use(
       http.get('/products/1', async () => {
         await delay();

@@ -7,6 +7,10 @@ import { faker } from '@faker-js/faker';
 // so to make sure our tests are robust and trustworthy
 // we should make sure that they are not dependant on any kind of global state
 export const db = factory({
+  category: {
+    id: primaryKey(faker.number.int),
+    name: faker.commerce.department,
+  },
   product: {
     id: primaryKey(faker.number.int),
     name: faker.commerce.productName,
