@@ -18,8 +18,6 @@ describe('ProductList', () => {
     [1, 2, 3].forEach(() => {
       const product = db.product.create();
       productIds.push(product.id);
-
-      console.log(product);
     });
   });
 
